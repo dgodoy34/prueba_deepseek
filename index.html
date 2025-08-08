@@ -192,6 +192,12 @@
             alert(`Gracias ${name}, hemos recibido tu mensaje. Nos pondremos en contacto pronto.`);
             this.reset();
         });
+        // Actualizar año en el footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    alert('El código fuente está protegido. Contacta al desarrollador para más información.');
+});
     </script>
 </body>
 </html>
