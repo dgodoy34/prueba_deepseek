@@ -193,12 +193,30 @@
             alert(`Gracias ${name}, hemos recibido tu mensaje. Nos pondremos en contacto pronto.`);
             this.reset();
         });
-        // Actualizar año en el footer
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-        document.addEventListener('contextmenu', function(e) {
+     
+    </script>
+    <script>
+  document.addEventListener('contextmenu', e => {
     e.preventDefault();
-    alert('El código fuente está protegido. Contacta al desarrollador para más información.');
-});
+    // Opcional: Mostrar un aviso elegante en lugar del alert()
+    const toast = document.createElement('div');
+    toast.textContent = '⚠️ Clic derecho deshabilitado';
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.right = '20px';
+    toast.style.backgroundColor = '#ff4444';
+    toast.style.color = 'white';
+    toast.style.padding = '10px 20px';
+    toast.style.borderRadius = '5px';
+    toast.style.zIndex = '9999';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 2000);
+  });
+</script>
+    <script>
+        document.querySelector('button').addEventListener('click', () => {
+            document.querySelector('nav').classList.toggle('hidden');
+        });
     </script>
 </body>
 </html>
