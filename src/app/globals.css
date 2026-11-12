@@ -1,0 +1,148 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-jakarta), sans-serif;
+}
+
+::selection {
+  background: #d3c6ff;
+  color: #211b2e;
+}
+
+.shell {
+  @apply mx-auto w-full max-w-[1200px] px-5 sm:px-8;
+}
+
+.nav-link {
+  @apply transition-colors hover:text-lilac;
+}
+
+.eyebrow {
+  @apply inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-4 py-2 text-[11px] font-extrabold tracking-[.14em] shadow-soft;
+}
+
+.primary-link {
+  @apply inline-flex items-center justify-center gap-3 rounded-full bg-ink px-7 py-4 text-sm font-extrabold text-white transition-all hover:-translate-y-1 hover:bg-lilac hover:shadow-soft;
+}
+
+.chip {
+  @apply rounded-full border border-ink/15 px-3 py-2;
+}
+
+.section-kicker {
+  @apply mb-4 text-xs font-extrabold uppercase tracking-[.16em] text-lilac;
+}
+
+.section-title {
+  @apply text-[clamp(2.5rem,5vw,4.7rem)] font-extrabold leading-[1.09] tracking-[-.065em];
+}
+
+.hero-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  max-width: 530px;
+  margin: auto;
+}
+
+.service-card {
+  @apply min-h-[335px] rounded-[2rem] border border-ink/10 p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-soft md:p-9;
+}
+
+.service-card.lavender {
+  background: #e5dcff;
+}
+
+.service-card.peach {
+  background: #ffdfcf;
+}
+
+.service-card.lime {
+  background: #d9efb9;
+}
+
+.service-card.sky {
+  background: #d6eafa;
+}
+
+.sample-preview {
+  @apply min-h-[330px] rounded-[2rem] p-7 text-ink shadow-soft transition-all md:p-9;
+  animation: pop-in 0.25s ease-out;
+}
+
+.sample-preview.coral {
+  background: #ffd5c6;
+}
+
+.sample-preview.purple {
+  background: #c6b5ff;
+}
+
+.sample-preview.blue {
+  background: #c5e1ff;
+}
+
+.sample-preview.dark {
+  background: #d1d1d9;
+}
+
+.sample-preview.yellow {
+  background: #f9df9a;
+}
+
+.ticker-track {
+  animation: ticker-slide 36s linear infinite;
+}
+
+@keyframes ticker-slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.float-slow {
+  animation: float 4.5s ease-in-out infinite;
+}
+
+.float-slower {
+  animation: float 6s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-12px) rotate(3deg);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0.55;
+    transform: scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
