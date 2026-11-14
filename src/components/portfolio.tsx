@@ -26,7 +26,7 @@ function PreviewMedia({ item, media, large = false }: { item: PortfolioItem; med
   }
   return <div className={`flex h-full w-full flex-col items-center justify-center gap-5 bg-gradient-to-br ${theme[item.accent].gradient} px-5 text-center`}>
     <span className="grid h-24 w-24 place-items-center rounded-[2rem] bg-white/35 shadow-sm transition-transform group-hover:scale-105"><Icon size={53} strokeWidth={1.4}/></span>
-    <span className="max-w-[14rem] text-sm font-extrabold leading-relaxed text-ink/70">{large ? media.alt : 'Formato de ejemplo'}</span>
+    <span className="max-w-[14rem] text-sm font-extrabold leading-relaxed text-ink/70">{large || item.published ? media.alt : 'Formato de ejemplo'}</span>
   </div>;
 }
 
