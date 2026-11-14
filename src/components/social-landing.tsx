@@ -5,6 +5,7 @@ import { ArrowDown, ArrowRight, ArrowUpRight, Check, ChevronDown, Heart, Menu, M
 import { platforms, services } from '@/lib/content';
 import { Portfolio } from '@/components/portfolio';
 import { Results as CaseStudyResults } from '@/components/results';
+import { FloatingActions } from '@/components/floating-actions';
 
 type PlatformId = (typeof platforms)[number]['id'];
 
@@ -13,10 +14,10 @@ function Header() {
   return <nav className="sticky top-0 z-50 border-b border-ink/10 bg-canvas/90 backdrop-blur-xl" aria-label="Navegación principal">
     <div className="shell flex h-[76px] items-center justify-between gap-4">
       <a href="#inicio" className="inline-flex items-center gap-2 text-xl font-extrabold tracking-tight" aria-label="Social Studio, inicio"><span className="grid h-9 w-9 place-items-center rounded-2xl bg-lilac text-white"><Sparkles size={19}/></span>social<span className="text-lilac">studio.</span></a>
-      <div className="hidden items-center gap-8 text-sm font-bold md:flex"><a href="#servicios" className="nav-link">Qué hacemos</a><a href="#plataformas" className="nav-link">Plataformas</a><a href="#enfoque" className="nav-link">Nuestra forma</a><a href="#portfolio" className="nav-link">Portfolio</a><a href="#resultados" className="nav-link">Resultados</a></div>
+      <div className="hidden items-center gap-6 text-sm font-bold md:flex lg:gap-8"><a href="#servicios" className="nav-link">Qué hacemos</a><a href="#portfolio" className="nav-link">Portfolio</a><a href="#resultados" className="nav-link">Resultados</a><a href="#plataformas" className="nav-link">Plataformas</a><a href="#enfoque" className="nav-link">Nuestra forma</a></div>
       <button className="rounded-xl border border-ink/15 p-2 md:hidden" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? 'Cerrar menú' : 'Abrir menú'} onClick={() => setOpen(v => !v)}>{open ? <X size={22}/> : <Menu size={22}/>}</button>
     </div>
-    {open && <div id="mobile-navigation" className="flex flex-col gap-4 border-t border-ink/10 bg-canvas px-6 py-5 text-sm font-bold md:hidden">{[['Qué hacemos','#servicios'],['Plataformas','#plataformas'],['Nuestra forma','#enfoque'],['Portfolio','#portfolio'],['Resultados','#resultados']].map(([label,href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}</div>}
+    {open && <div id="mobile-navigation" className="flex flex-col gap-4 border-t border-ink/10 bg-canvas px-6 py-5 text-sm font-bold md:hidden">{[['Qué hacemos','#servicios'],['Portfolio','#portfolio'],['Resultados','#resultados'],['Plataformas','#plataformas'],['Nuestra forma','#enfoque']].map(([label,href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}</div>}
   </nav>;
 }
 
@@ -28,17 +29,17 @@ function Ticker() {
 }
 
 function Hero() {
-  return <section id="inicio" className="relative overflow-hidden pt-14 pb-16 md:pt-24 md:pb-24">
+  return <section id="inicio" className="relative overflow-hidden pt-14 pb-16 md:pt-20 md:pb-20">
     <div className="pointer-events-none absolute -right-24 top-4 h-80 w-80 rounded-full bg-[#f8e4bd] blur-3xl"/>
-    <div className="shell relative grid items-center gap-12 lg:grid-cols-[1.08fr_.92fr]">
+    <div className="shell relative grid items-center gap-12 lg:grid-cols-[1fr_1fr] xl:gap-16">
       <div>
         <div className="eyebrow mb-6"><span className="h-2 w-2 rounded-full bg-[#fe8769]"/> SOCIAL MEDIA, PERO CON ONDA</div>
-        <h1 className="max-w-[730px] text-[clamp(3.3rem,7vw,6.8rem)] font-extrabold leading-[1.03] tracking-[-.075em]">Que tu marca <span className="relative inline-block text-lilac">se haga notar<span className="absolute -bottom-2 left-0 h-3 w-full -rotate-2 rounded-full bg-[#f5c96c]/65 -z-10"/></span><span className="text-[#fe8769]">.</span></h1>
+        <h1 className="max-w-[650px] text-[clamp(3.2rem,5.6vw,5.8rem)] font-extrabold leading-[1.05] tracking-[-.068em]">Que tu marca <span className="relative inline-block text-lilac">se haga notar<span className="absolute -bottom-2 left-0 h-3 w-full -rotate-2 rounded-full bg-[#f5c96c]/65 -z-10"/></span><span className="text-[#fe8769]">.</span></h1>
         <p className="mt-7 max-w-xl text-base leading-8 text-ink/70 md:text-xl">Dos mentes, mil ideas y una misión: crear contenido que genere conversaciones, construya comunidad y se sienta auténtico en cada plataforma.</p>
         <div className="mt-8 flex flex-wrap items-center gap-4"><a href="#plataformas" className="primary-link">Explorá el universo <ArrowUpRight size={18}/></a><a href="#servicios" className="inline-flex items-center gap-2 text-sm font-extrabold hover:text-lilac">Descubrí qué hacemos <ArrowDown size={17}/></a></div>
         <div className="mt-12 flex flex-wrap gap-2 text-xs font-extrabold text-ink/60"><span className="chip">#SocialFirst</span><span className="chip">#Creatividad</span><span className="chip">#Multiplataforma</span></div>
       </div>
-      <div className="hero-stage" aria-label="Ilustración de ideas, contenido y redes sociales">
+      <div className="hero-stage lg:-translate-y-8 xl:-translate-y-10" aria-label="Ilustración de ideas, contenido y redes sociales">
         <div className="absolute inset-[12%_8%_9%_7%] rotate-[-7deg] rounded-[3.5rem] bg-[#bdb2fb]"/>
         <div className="absolute inset-[7%_12%_14%_10%] rotate-[6deg] rounded-[3.5rem] bg-[#ffc8b7]"/>
         <div className="absolute inset-[10%_10%_12%_10%] flex flex-col justify-between rounded-[3.2rem] border-2 border-ink bg-[#fffef9] p-7 shadow-[12px_16px_0_#211b2e] sm:p-9">
@@ -83,5 +84,5 @@ function Platforms() {
 function Approach() { return <section id="enfoque" className="scroll-mt-24 bg-canvas py-20 md:py-28"><div className="shell grid items-center gap-12 lg:grid-cols-2"><div><p className="section-kicker">ASÍ TRABAJAMOS</p><h2 className="section-title">Estrategia con cabeza. <span className="text-[#f27d68]">Contenido con corazón.</span></h2><p className="mt-5 max-w-lg leading-8 text-ink/70">La creatividad sola no alcanza. La combinamos con escucha, agilidad y datos para que cada publicación tenga una razón de ser.</p></div><div className="space-y-3">{[['01', 'Escuchamos', 'Entendemos a la marca, la comunidad y la conversación.'],['02', 'Creamos', 'Planeamos ideas y las transformamos en contenido nativo.'],['03', 'Conversamos', 'Estamos presentes: respondemos, moderamos y conectamos.'],['04', 'Aprendemos', 'Medimos, ajustamos y volvemos a crear.']].map(([number,title,desc]) => <div key={number} className="flex gap-5 rounded-3xl border border-ink/10 bg-white p-6 transition-transform hover:translate-x-1"><span className="text-2xl font-black text-lilac">{number}</span><div><h3 className="text-lg font-extrabold">{title}</h3><p className="mt-1 text-sm leading-6 text-ink/65">{desc}</p></div></div>)}</div></div></section>; }
 
 export function SocialLanding() {
-  return <main className="min-h-screen overflow-x-hidden bg-canvas text-ink"><Header/><Hero/><Ticker/><Services/><Platforms/><Approach/><Portfolio/><CaseStudyResults/><footer className="bg-[#241d37] px-6 py-9 text-white"><div className="shell flex flex-wrap items-center justify-between gap-4"><span className="text-lg font-extrabold">social<span className="text-[#bdaaff]">studio.</span></span><span className="text-xs text-white/55">Creatividad, estrategia y comunidad. Hecho para conectar ✳</span><a href="#inicio" className="flex items-center gap-2 text-xs font-bold hover:text-[#f8cf84]">Volver arriba <ArrowRight className="-rotate-90" size={16}/></a></div></footer></main>;
+  return <main className="min-h-screen overflow-x-hidden bg-canvas text-ink"><Header/><Hero/><Ticker/><Services/><Portfolio/><CaseStudyResults/><Platforms/><Approach/><FloatingActions/><footer className="bg-[#241d37] px-6 py-9 text-white"><div className="shell flex flex-wrap items-center justify-between gap-4"><span className="text-lg font-extrabold">social<span className="text-[#bdaaff]">studio.</span></span><span className="text-xs text-white/55">Creatividad, estrategia y comunidad. Hecho para conectar ✳</span><a href="#inicio" className="flex items-center gap-2 text-xs font-bold hover:text-[#f8cf84]">Volver arriba <ArrowRight className="-rotate-90" size={16}/></a></div></footer></main>;
 }
