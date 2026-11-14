@@ -133,6 +133,60 @@ body {
   }
 }
 
+/* Animación sutil del Hero. Transform/opacity evitan recalcular el layout. */
+.hero-card-motion {
+  animation: hero-card-breathe 6s ease-in-out infinite;
+  transform-origin: center;
+}
+.hero-backdrop-violet {
+  animation: hero-backdrop-violet 8s ease-in-out infinite;
+}
+.hero-backdrop-peach {
+  animation: hero-backdrop-peach 7s ease-in-out infinite;
+}
+.hero-heart {
+  animation: hero-heart-pop 3.2s ease-in-out infinite;
+  transform-origin: center;
+}
+.hero-chat-icon {
+  animation: hero-chat-wiggle 5s ease-in-out infinite;
+}
+.hero-hey {
+  animation: hero-hey-bounce 4.1s ease-in-out infinite;
+}
+@keyframes hero-card-breathe {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-7px) rotate(0.45deg); }
+}
+@keyframes hero-backdrop-violet {
+  0%, 100% { transform: rotate(-7deg) translateY(0); }
+  50% { transform: rotate(-9deg) translateY(4px); }
+}
+@keyframes hero-backdrop-peach {
+  0%, 100% { transform: rotate(6deg) translateY(0); }
+  50% { transform: rotate(8deg) translateY(-4px); }
+}
+@keyframes hero-heart-pop {
+  0%, 100% { transform: scale(1); }
+  12%, 23% { transform: scale(1.12); }
+  18%, 30% { transform: scale(1); }
+}
+@keyframes hero-chat-wiggle {
+  0%, 75%, 100% { transform: rotate(-12deg); }
+  82% { transform: rotate(-4deg); }
+  90% { transform: rotate(-17deg); }
+}
+@keyframes hero-hey-bounce {
+  0%, 70%, 100% { transform: rotate(-12deg) translateY(0); }
+  78% { transform: rotate(-7deg) translateY(-5px); }
+  87% { transform: rotate(-12deg) translateY(0); }
+}
+@media (max-width: 639px) {
+  .hero-card-motion { animation-duration: 8s; }
+  .hero-backdrop-violet, .hero-backdrop-peach { animation-duration: 11s; }
+  .hero-heart, .hero-hey { animation: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
