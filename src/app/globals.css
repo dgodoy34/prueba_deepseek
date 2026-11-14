@@ -133,58 +133,86 @@ body {
   }
 }
 
-/* Animación sutil del Hero. Transform/opacity evitan recalcular el layout. */
+/* Hero animado con CSS: movimiento visible y continuo, sin dependencias extra.
+   Cada capa se anima por separado para mantener legibilidad y evitar layout shift. */
 .hero-card-motion {
-  animation: hero-card-breathe 6s ease-in-out infinite;
-  transform-origin: center;
+  animation: hero-card-float 3.7s ease-in-out infinite;
+  transform-origin: 50% 50%;
 }
 .hero-backdrop-violet {
-  animation: hero-backdrop-violet 8s ease-in-out infinite;
+  animation: hero-backdrop-violet 5.4s ease-in-out infinite;
 }
 .hero-backdrop-peach {
-  animation: hero-backdrop-peach 7s ease-in-out infinite;
+  animation: hero-backdrop-peach 4.8s ease-in-out infinite;
 }
-.hero-heart {
-  animation: hero-heart-pop 3.2s ease-in-out infinite;
-  transform-origin: center;
+.hero-chat-tile {
+  animation: hero-chat-tile-breathe 3.2s ease-in-out infinite;
 }
 .hero-chat-icon {
-  animation: hero-chat-wiggle 5s ease-in-out infinite;
+  animation: hero-chat-wiggle 3.2s ease-in-out infinite;
+}
+.hero-chat-ripple {
+  pointer-events: none;
+  animation: hero-chat-ripple 3.2s ease-out infinite;
+}
+.hero-heart {
+  animation: hero-heart-pop 2.2s ease-in-out infinite;
+  transform-origin: center;
+}
+.hero-online-dot {
+  animation: hero-online-blink 1.7s ease-in-out infinite;
 }
 .hero-hey {
-  animation: hero-hey-bounce 4.1s ease-in-out infinite;
+  animation: hero-hey-bounce 2.7s ease-in-out infinite;
 }
-@keyframes hero-card-breathe {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-7px) rotate(0.45deg); }
+@keyframes hero-card-float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-17px) rotate(1deg); }
 }
 @keyframes hero-backdrop-violet {
-  0%, 100% { transform: rotate(-7deg) translateY(0); }
-  50% { transform: rotate(-9deg) translateY(4px); }
+  0%, 100% { transform: rotate(-7deg) translate(-1px, 0); }
+  50% { transform: rotate(-12deg) translate(-7px, 9px); }
 }
 @keyframes hero-backdrop-peach {
-  0%, 100% { transform: rotate(6deg) translateY(0); }
-  50% { transform: rotate(8deg) translateY(-4px); }
+  0%, 100% { transform: rotate(6deg) translate(0, 0); }
+  50% { transform: rotate(11deg) translate(6px, -8px); }
+}
+@keyframes hero-chat-tile-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
+}
+@keyframes hero-chat-wiggle {
+  0%, 100% { transform: rotate(-12deg); }
+  40% { transform: rotate(-4deg); }
+  65% { transform: rotate(-19deg); }
+}
+@keyframes hero-chat-ripple {
+  0%, 15% { opacity: 0; transform: scale(0.8); }
+  35% { opacity: 0.45; }
+  75%, 100% { opacity: 0; transform: scale(1.15); }
 }
 @keyframes hero-heart-pop {
   0%, 100% { transform: scale(1); }
-  12%, 23% { transform: scale(1.12); }
-  18%, 30% { transform: scale(1); }
+  20% { transform: scale(1.23) rotate(-8deg); }
+  35% { transform: scale(1.05); }
+  48% { transform: scale(1.18); }
+  60% { transform: scale(1); }
 }
-@keyframes hero-chat-wiggle {
-  0%, 75%, 100% { transform: rotate(-12deg); }
-  82% { transform: rotate(-4deg); }
-  90% { transform: rotate(-17deg); }
+@keyframes hero-online-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.25; transform: scale(0.65); }
 }
 @keyframes hero-hey-bounce {
-  0%, 70%, 100% { transform: rotate(-12deg) translateY(0); }
-  78% { transform: rotate(-7deg) translateY(-5px); }
-  87% { transform: rotate(-12deg) translateY(0); }
+  0%, 100% { transform: rotate(-12deg) translateY(0); }
+  35% { transform: rotate(3deg) translateY(-10px); }
+  65% { transform: rotate(-18deg) translateY(2px); }
 }
 @media (max-width: 639px) {
-  .hero-card-motion { animation-duration: 8s; }
-  .hero-backdrop-violet, .hero-backdrop-peach { animation-duration: 11s; }
-  .hero-heart, .hero-hey { animation: none; }
+  .hero-card-motion { animation-duration: 5.5s; }
+  .hero-backdrop-violet, .hero-backdrop-peach { animation-duration: 7s; }
+  .hero-chat-tile { animation-duration: 4.5s; }
+  .hero-chat-ripple { display: none; }
+  .hero-heart, .hero-hey { animation-duration: 4s; }
 }
 
 @media (prefers-reduced-motion: reduce) {
