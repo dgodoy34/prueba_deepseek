@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, ChevronDown, Heart, Menu, MessageCircle, MousePointer2, Play, Sparkles, X } from 'lucide-react';
 import { platforms, services } from '@/lib/content';
 import { Portfolio } from '@/components/portfolio';
@@ -29,6 +29,16 @@ function Ticker() {
 }
 
 function Hero() {
+  const [motionEnabled, setMotionEnabled] = useState(false);
+
+  useEffect(() => {
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setMotionEnabled(!preference.matches);
+    update();
+    preference.addEventListener('change', update);
+    return () => preference.removeEventListener('change', update);
+  }, []);
+
   return <section id="inicio" className="relative scroll-mt-20 overflow-hidden pb-10 pt-8 sm:pb-16 sm:pt-12 md:pb-20 md:pt-20">
     <div className="pointer-events-none absolute -right-24 top-4 h-80 w-80 rounded-full bg-[#f8e4bd] blur-3xl"/>
     <div className="shell relative grid items-center gap-5 sm:gap-10 lg:grid-cols-[minmax(0,1.04fr)_minmax(0,.96fr)] lg:gap-8 xl:gap-14">
@@ -39,16 +49,20 @@ function Hero() {
         <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 sm:mt-8 sm:gap-4"><a href="#portfolio" className="primary-link">Explorá los trabajos <ArrowUpRight size={18}/></a><a href="#servicios" className="inline-flex items-center gap-2 text-sm font-extrabold hover:text-lilac">Descubrí qué hacemos <ArrowDown size={17}/></a></div>
         <div className="mt-8 hidden flex-wrap gap-2 text-xs font-extrabold text-ink/60 sm:flex lg:mt-12"><span className="chip">#SocialFirst</span><span className="chip">#Creatividad</span><span className="chip">#Multiplataforma</span></div>
       </div>
-      <div className="hero-stage w-full max-w-[330px] sm:max-w-[460px] lg:translate-y-0 xl:max-w-[505px]" aria-label="Ilustración de ideas, contenido y redes sociales">
-        <div className="absolute inset-[12%_8%_9%_7%] rotate-[-7deg] rounded-[3.5rem] bg-[#bdb2fb]"/>
-        <div className="absolute inset-[7%_12%_14%_10%] rotate-[6deg] rounded-[3.5rem] bg-[#ffc8b7]"/>
-        <div className="absolute inset-[10%_10%_12%_10%] flex flex-col justify-between rounded-[2.3rem] border-2 border-ink bg-[#fffef9] p-4 shadow-[8px_10px_0_#211b2e] sm:rounded-[3.2rem] sm:p-9 sm:shadow-[12px_16px_0_#211b2e]">
-          <div className="flex items-center justify-between"><div className="flex items-center gap-2"><span className="h-7 w-7 rounded-full bg-lilac sm:h-9 sm:w-9"/><div><p className="text-xs font-extrabold sm:text-sm">social.studio</p><p className="text-[10px] text-ink/50">Ideas en acción</p></div></div><span className="rounded-full bg-[#f2ebff] px-2 py-1 text-[9px] font-black text-lilac sm:px-3 sm:text-[10px]">EN LÍNEA ●</span></div>
-          <div className="relative mx-auto grid h-32 w-32 place-items-center rounded-[2rem] bg-[#f9d86f] sm:h-52 sm:w-52 sm:rounded-[2.8rem]"><div className="absolute -right-6 -top-5 rounded-2xl bg-white p-3 shadow-soft"><Heart className="fill-[#ff856c] text-[#ff856c]"/></div><MessageCircle className="h-16 w-16 -rotate-12 stroke-[1.6] text-ink sm:h-24 sm:w-24"/><span className="absolute bottom-3 right-0 -rotate-12 rounded-full bg-[#fd8678] px-2 py-1 text-xs font-black text-white sm:bottom-5 sm:right-2 sm:px-3 sm:py-2 sm:text-sm">HEY!</span></div>
+      <div className={`hero-stage w-full max-w-[330px] sm:max-w-[460px] lg:translate-y-0 xl:max-w-[505px] ${motionEnabled ? "hero-motion-active" : "hero-motion-paused"}`} aria-label="Ilustración de ideas, contenido y redes sociales">
+        <div className="hero-backdrop-violet absolute inset-[12%_8%_9%_7%] rotate-[-7deg] rounded-[3.5rem] bg-[#bdb2fb]"/>
+        <div className="hero-backdrop-peach absolute inset-[7%_12%_14%_10%] rotate-[6deg] rounded-[3.5rem] bg-[#ffc8b7]"/>
+        <div className="hero-card-motion absolute inset-[10%_10%_12%_10%] flex flex-col justify-between rounded-[2.3rem] border-2 border-ink bg-[#fffef9] p-4 shadow-[8px_10px_0_#211b2e] sm:rounded-[3.2rem] sm:p-9 sm:shadow-[12px_16px_0_#211b2e]">
+          <div className="flex items-center justify-between"><div className="flex items-center gap-2"><span className="h-7 w-7 rounded-full bg-lilac sm:h-9 sm:w-9"/><div><p className="text-xs font-extrabold sm:text-sm">social.studio</p><p className="text-[10px] text-ink/50">Ideas en acción</p></div></div><span className="rounded-full bg-[#f2ebff] px-2 py-1 text-[9px] font-black text-lilac sm:px-3 sm:text-[10px]">EN LÍNEA <span className="hero-online-dot inline-block h-1.5 w-1.5 rounded-full bg-lilac align-middle" aria-hidden="true"/></span></div>
+          <div className="hero-chat-tile relative mx-auto grid h-32 w-32 place-items-center rounded-[2rem] bg-[#f9d86f] sm:h-52 sm:w-52 sm:rounded-[2.8rem]"><div className="hero-heart absolute -right-6 -top-5 rounded-2xl bg-white p-3 shadow-soft"><Heart className="fill-[#ff856c] text-[#ff856c]"/></div><span className="hero-chat-ripple absolute inset-3 rounded-[1.8rem] border-2 border-ink/15" aria-hidden="true"/><MessageCircle className="hero-chat-icon h-16 w-16 -rotate-12 stroke-[1.6] text-ink sm:h-24 sm:w-24"/><span className="hero-hey absolute bottom-3 right-0 -rotate-12 rounded-full bg-[#fd8678] px-2 py-1 text-xs font-black text-white sm:bottom-5 sm:right-2 sm:px-3 sm:py-2 sm:text-sm">HEY!</span></div>
           <div className="flex items-center justify-around gap-1 border-t border-ink/10 pt-3 text-ink sm:pt-5"><span className="flex items-center gap-1 text-[10px] font-bold sm:gap-2 sm:text-xs"><Heart size={19} className="text-[#fc6c77]"/> Conexiones</span><span className="flex items-center gap-1 text-[10px] font-bold sm:gap-2 sm:text-xs"><MessageCircle size={19} className="text-lilac"/> Conversaciones</span></div>
         </div>
         <div className="float-slow absolute hidden sm:block left-0 top-6 rotate-[-12deg] rounded-2xl border-2 border-ink bg-[#c8f19f] px-4 py-3 text-xs font-black shadow-[5px_5px_0_#211b2e]">GOOD VIBES ✷</div>
         <div className="float-slower absolute hidden sm:block bottom-4 right-0 rotate-[9deg] rounded-2xl border-2 border-ink bg-white px-4 py-3 text-sm font-black shadow-[5px_5px_0_#211b2e]">¡Esto funciona! ↗</div>
+        <button type="button" aria-pressed={motionEnabled} onClick={() => setMotionEnabled(enabled => !enabled)}
+          className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 rounded-full border border-ink/15 bg-white/95 px-3 py-1.5 text-[10px] font-bold text-ink shadow-sm transition-colors hover:bg-[#e6ddff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lilac sm:bottom-1 sm:text-xs">
+          {motionEnabled ? 'Pausar animación' : 'Activar animación'}
+        </button>
       </div>
     </div>
   </section>;
