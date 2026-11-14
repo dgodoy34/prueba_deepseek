@@ -1,0 +1,54 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Los permisos se crean MANUALMENTE desde la consola o con Admin SDK.
+    // Ningún cliente puede crear, cambiar ni borrar su propio permiso.
+    function studioAdmin() {
+      return request.auth != null
+        && exists(/databases/$(database)/documents/studioAdmins/$(request.auth.uid))
+        && get(/databases/$(database)/documents/studioAdmins/$(request.auth.uid)).data.enabled == true;
+    }
+    match /studioAdmins/{uid} {
+      allow get: if request.auth != null && request.auth.uid == uid;
+      allow list, create, update, delete: if false;
+    }
+
+    function validPublication() {
+      return request.resource.data.keys().hasOnly([
+        'title', 'category', 'platform', 'description', 'role',
+        'accent', 'media', 'published', 'sourceUrl', 'updatedAt', 'createdAt'
+      ])
+      && request.resource.data.keys().hasAll([
+        'title', 'category', 'platform', 'description', 'role',
+        'accent', 'media', 'published'
+      ])
+      && request.resource.data.title is string
+      && request.resource.data.title.size() > 0
+      && request.resource.data.title.size() <= 120
+      && request.resource.data.description is string
+      && request.resource.data.description.size() <= 1500
+      && request.resource.data.platform is string
+      && request.resource.data.platform.size() <= 100
+      && request.resource.data.role is string
+      && request.resource.data.role.size() <= 250
+      && request.resource.data.category in ['Reels', 'Campañas', 'Eventos', 'Contenido']
+      && request.resource.data.accent in ['violet', 'coral', 'lime', 'blue']
+      && request.resource.data.published is bool
+      && request.resource.data.media is list
+      && request.resource.data.media.size() >= 1
+      && request.resource.data.media.size() <= 12
+      && (!('sourceUrl' in request.resource.data)
+          || (request.resource.data.sourceUrl is string && request.resource.data.sourceUrl.size() <= 2000));
+    }
+
+    match /socialStudioPublications/{publicationId} {
+      allow get, list: if studioAdmin() || resource.data.published == true;
+      allow create, update: if studioAdmin() && validPublication();
+      allow delete: if studioAdmin();
+    }
+
+    // Marketplace anterior: denegado por defecto.
+    // NO reintroducir reglas de /users donde el usuario pueda editar 'role'.
+    // Si se necesita conservar otro uso, auditarlo y definir reglas específicas.
+  }
+}
