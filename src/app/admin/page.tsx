@@ -11,6 +11,7 @@ import { ArrowLeft, ExternalLink, LogOut, Plus, Save, Trash2 } from 'lucide-reac
 import { firebaseServices, ADMIN_COLLECTION, STUDIO_COLLECTION } from '@/lib/firebase/client';
 import { safePortfolioItem } from '@/lib/firebase/publications';
 import type { MediaAsset, PortfolioItem, WorkCategory } from '@/lib/portfolio';
+import { AdminToast, ConfirmDelete, type AdminNotice } from '@/components/admin-feedback';
 
 type Draft = Omit<PortfolioItem, 'id'>;
 const emptyDraft: Draft = {
@@ -34,7 +35,9 @@ export default function StudioAdmin() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [saving, setSaving] = useState(false);
-  const [message, setMessage] = useState('');
+  const [notice, setNotice] = useState<AdminNotice | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<PortfolioItem | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const [failure, setFailure] = useState('');
 
   const refresh = useCallback(async () => {
@@ -85,14 +88,14 @@ export default function StudioAdmin() {
       media: item.media.map(asset => ({ ...asset })), published: item.published,
       sourceUrl: item.sourceUrl || '',
     });
-    setFailure(''); setMessage('');
+    setNotice(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function newProject() {
     setSelectedId(null);
     setDraft({ ...emptyDraft, media: [{ type: 'video', alt: 'Vista previa del proyecto' }] });
-    setFailure(''); setMessage('');
+    setNotice(null);
   }
 
   function updateMedia(index: number, values: Partial<MediaAsset>) {
@@ -103,16 +106,16 @@ export default function StudioAdmin() {
   }
 
   async function save(publish: boolean) {
-    setFailure(''); setMessage('');
+    setNotice(null);
     if (!draft.title.trim() || !draft.description.trim() || !draft.platform.trim() || !draft.role.trim()) {
-      setFailure('Completá título, descripción, plataforma y trabajo realizado.'); return;
+      setNotice({ kind: 'error', message: 'Completá título, descripción, plataforma y trabajo realizado.' }); return;
     }
     if (draft.media.some(asset => !asset.alt.trim() || !validUrl(asset.src || '') || !validUrl(asset.poster || '')) ||
         !validUrl(draft.sourceUrl || '')) {
-      setFailure('Completá las descripciones y usá enlaces HTTPS válidos para las imágenes, videos y publicaciones.'); return;
+      setNotice({ kind: 'error', message: 'Completá las descripciones y usá enlaces HTTPS válidos para las imágenes, videos y publicaciones.' }); return;
     }
     if (publish && !draft.media.some(asset => asset.src) && !draft.sourceUrl) {
-      setFailure('Para publicar necesitás al menos una imagen/video HTTPS o un enlace a la publicación original.'); return;
+      setNotice({ kind: 'error', message: 'Para publicar necesitás al menos una imagen/video HTTPS o un enlace a la publicación original.' }); return;
     }
     setSaving(true);
     try {
@@ -141,22 +144,29 @@ export default function StudioAdmin() {
       }
       setDraft(previous => ({ ...previous, published: publish }));
       await refresh();
-      setMessage(publish ? 'Proyecto publicado correctamente.' : 'Borrador guardado correctamente.');
+      setNotice({ kind: 'success', message: publish ? 'Proyecto publicado correctamente.' : 'Borrador guardado correctamente.' });
     } catch (error) {
-      setFailure(error instanceof Error ? error.message : 'No pudimos guardar el proyecto.');
+      setNotice({ kind: 'error', message: error instanceof Error ? error.message : 'No pudimos guardar el proyecto.' });
     } finally { setSaving(false); }
   }
 
-  async function remove(item: PortfolioItem) {
-    if (!window.confirm('¿Eliminar definitivamente "' + item.title + '"? Esta operación no se puede deshacer.')) return;
-    setFailure(''); setMessage('');
+  async function confirmRemove() {
+    if (!deleteTarget || deleting) return;
+    setDeleting(true);
+    setNotice(null);
     try {
       const { db } = firebaseServices();
-      await deleteDoc(doc(db, STUDIO_COLLECTION, item.id));
-      if (selectedId === item.id) newProject();
+      await deleteDoc(doc(db, STUDIO_COLLECTION, deleteTarget.id));
+      if (selectedId === deleteTarget.id) newProject();
+      setDeleteTarget(null);
       await refresh();
-      setMessage('Proyecto eliminado.');
-    } catch (error) { setFailure(error instanceof Error ? error.message : 'No pudimos eliminar el proyecto.'); }
+      setNotice({ kind: 'success', message: 'Publicación eliminada correctamente.' });
+    } catch (error) {
+      setDeleteTarget(null);
+      setNotice({ kind: 'error', message: error instanceof Error ? error.message : 'No pudimos eliminar la publicación.' });
+    } finally {
+      setDeleting(false);
+    }
   }
 
   if (loading) return <main className="grid min-h-screen place-items-center bg-canvas text-ink">Cargando Social Studio Admin…</main>;
@@ -168,6 +178,8 @@ export default function StudioAdmin() {
   </main>;
 
   return <main className="min-h-screen bg-canvas pb-20 text-ink">
+    {notice && <AdminToast notice={notice} onDismiss={() => setNotice(null)} />}
+    {deleteTarget && <ConfirmDelete title={deleteTarget.title} busy={deleting} onCancel={() => setDeleteTarget(null)} onConfirm={confirmRemove} />}
     <header className="border-b border-ink/10 bg-white">
       <div className="shell flex flex-wrap items-center justify-between gap-4 py-5">
         <div><p className="text-xs font-black uppercase tracking-[.15em] text-lilac">SOCIAL STUDIO</p>
@@ -245,8 +257,6 @@ export default function StudioAdmin() {
             </div>)}
           </div>
         </div>
-        {failure && <p role="alert" className="mt-6 rounded-xl bg-red-50 p-4 text-sm text-red-800">{failure}</p>}
-        {message && <p role="status" className="mt-6 rounded-xl bg-green-50 p-4 text-sm text-green-800">{message}</p>}
         <div className="mt-8 flex flex-wrap gap-3">
           <button type="button" disabled={saving} onClick={() => save(false)} className="inline-flex items-center gap-2 rounded-full border-2 border-ink px-5 py-3 text-sm font-extrabold disabled:opacity-50"><Save size={17}/> Guardar borrador</button>
           <button type="button" disabled={saving} onClick={() => save(true)} className="primary-link disabled:opacity-50">{saving ? 'Guardando…' : 'Publicar en el portfolio'}</button>
@@ -265,7 +275,7 @@ export default function StudioAdmin() {
                 <p className="text-xs font-bold text-lilac">{item.category} · {item.published ? 'Publicado' : 'Borrador'}</p>
                 <p className="mt-1 break-words font-extrabold">{item.title}</p>
               </div>
-              <button type="button" onClick={() => remove(item)} aria-label={'Eliminar ' + item.title} className="shrink-0 rounded-full p-2 text-red-700 hover:bg-red-50"><Trash2 size={17}/></button>
+              <button type="button" onClick={() => setDeleteTarget(item)} aria-label={'Eliminar ' + item.title} className="shrink-0 rounded-full p-2 text-red-700 hover:bg-red-50"><Trash2 size={17}/></button>
             </div>
             <button type="button" onClick={() => edit(item)} className="mt-3 inline-flex items-center gap-1 text-sm font-extrabold text-lilac"><ArrowLeft size={16}/> Editar</button>
           </div>)}
