@@ -7,11 +7,11 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import { firebaseServices, STUDIO_COLLECTION } from '@/lib/firebase/client';
 import { safePortfolioItem } from '@/lib/firebase/publications';
 
-const theme: Record<PortfolioItem['accent'], { gradient: string; subtle: string }> = {
-  violet: { gradient: 'from-[#e4d7ff] to-[#b49af8]', subtle: 'bg-[#ebe2ff]' },
-  coral: { gradient: 'from-[#ffd9c9] to-[#fdab98]', subtle: 'bg-[#ffdfd0]' },
-  lime: { gradient: 'from-[#def4bb] to-[#a7db82]', subtle: 'bg-[#e5f5d2]' },
-  blue: { gradient: 'from-[#d5ecff] to-[#9fc5ef]', subtle: 'bg-[#d9eafe]' },
+const theme: Record<PortfolioItem['accent'], { gradient: string; subtle: string; border: string; tag: string }> = {
+  violet: { gradient: 'from-[#e4d7ff] to-[#b49af8]', subtle: 'bg-[#ebe2ff]', border: 'border-[#b49af8]', tag: 'bg-[#e4d7ff]' },
+  coral: { gradient: 'from-[#ffd9c9] to-[#fdab98]', subtle: 'bg-[#ffdfd0]', border: 'border-[#fdab98]', tag: 'bg-[#ffd9c9]' },
+  lime: { gradient: 'from-[#def4bb] to-[#a7db82]', subtle: 'bg-[#e5f5d2]', border: 'border-[#a7db82]', tag: 'bg-[#def4bb]' },
+  blue: { gradient: 'from-[#d5ecff] to-[#9fc5ef]', subtle: 'bg-[#d9eafe]', border: 'border-[#9fc5ef]', tag: 'bg-[#d5ecff]' },
 };
 const categoryIcons = { Reels: Clapperboard, Campañas: Megaphone, Eventos: Radio, Contenido: Images };
 const categories: WorkCategory[] = ['Reels', 'Campañas', 'Eventos', 'Contenido'];
@@ -22,7 +22,7 @@ function PreviewMedia({ item, media, large = false }: { item: PortfolioItem; med
     return <video key={media.src} src={media.src} poster={media.poster} controls={large} preload="metadata" playsInline className="h-full w-full object-contain" aria-label={media.alt}/>;
   }
   if (media.type === 'image' && media.src) {
-    return <img src={media.src} alt={media.alt} className="h-full w-full object-cover" loading="lazy"/>;
+    return <img src={media.src} alt={media.alt} className="block h-full w-full object-contain" loading="lazy"/>;
   }
   return <div className={`flex h-full w-full flex-col items-center justify-center gap-5 bg-gradient-to-br ${theme[item.accent].gradient} px-5 text-center`}>
     <span className="grid h-24 w-24 place-items-center rounded-[2rem] bg-white/35 shadow-sm transition-transform group-hover:scale-105"><Icon size={53} strokeWidth={1.4}/></span>
@@ -68,8 +68,8 @@ function MediaViewer({ item, onClose }: { item: PortfolioItem; onClose: () => vo
       <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="work-dialog-title" aria-describedby="work-dialog-description"
         className="relative grid max-h-[92dvh] w-full max-w-5xl overflow-y-auto rounded-[1.7rem] bg-[#fffdf9] text-ink shadow-2xl lg:grid-cols-[minmax(0,1.1fr)_minmax(310px,.9fr)]">
         <button ref={closeRef} type="button" onClick={onClose} aria-label="Cerrar publicación" className="sticky top-3 z-20 col-start-1 row-start-1 ml-auto mr-3 mt-3 h-10 w-10 rounded-full border border-ink/15 bg-white/95 p-2 shadow-soft transition hover:bg-[#f5f0ff] lg:absolute lg:right-4 lg:top-4 lg:m-0"><X size={21}/></button>
-        <div className={`relative col-start-1 row-start-1 flex h-[min(49dvh,380px)] min-h-[265px] items-center justify-center overflow-hidden ${theme[item.accent].subtle} lg:h-auto lg:min-h-[560px]`}>
-          <div className={`group mx-auto h-full max-h-full ${item.category === 'Reels' ? 'aspect-[9/16]' : 'aspect-[4/3] max-w-full'} overflow-hidden rounded-2xl shadow-soft`}>
+        <div className={`relative col-start-1 row-start-1 flex h-[min(49dvh,380px)] min-h-[265px] items-center justify-center overflow-hidden p-3 ${theme[item.accent].subtle} lg:h-[min(76dvh,690px)] lg:min-h-[480px] lg:p-5`}>
+          <div className={`group mx-auto flex h-full max-h-full w-full max-w-full items-center justify-center overflow-hidden rounded-2xl ${!media.src ? "shadow-soft" : ""}`}>
             <PreviewMedia item={item} media={media} large/>
           </div>
           {count > 1 && <>
@@ -82,7 +82,7 @@ function MediaViewer({ item, onClose }: { item: PortfolioItem; onClose: () => vo
         </div>
         <div className="relative flex flex-col p-5 sm:p-6 md:p-9">
           <div className="flex items-start justify-between gap-4">
-            <span className="rounded-full bg-[#eee7ff] px-4 py-2 text-xs font-black">{item.category} · {item.platform}</span>
+            <span className={`rounded-full px-4 py-2 text-xs font-black ${theme[item.accent].tag}`}>{item.category} · {item.platform}</span>
           </div>
           <div className="mt-5 sm:mt-9">
             <p className="section-kicker">DENTRO DEL STUDIO</p>
@@ -164,10 +164,10 @@ export function Portfolio() {
           {visible.map(item => {
             const firstMedia = item.media[0];
             return <button key={item.id} type="button" onClick={() => setActive(item)} aria-label={`Abrir ${item.title}`}
-              className="group overflow-hidden rounded-[1.5rem] border border-ink/10 bg-white text-left shadow-soft transition-all hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lilac">
-              <div className="relative aspect-[4/5] overflow-hidden">
+              className={`group overflow-hidden rounded-[1.5rem] border-2 bg-white text-left shadow-soft transition-all hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lilac ${theme[item.accent].border}`}>
+              <div className={`relative aspect-[4/5] overflow-hidden p-2 ${theme[item.accent].subtle}`}>
                 <PreviewMedia item={item} media={firstMedia}/>
-                <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[10px] font-black uppercase">{item.category}</span>
+                <span className={`absolute left-3 top-3 rounded-full px-3 py-1 text-[10px] font-black uppercase shadow-sm ${theme[item.accent].tag}`}>{item.category}</span>
                 <span className="absolute bottom-3 left-3 rounded-full bg-white/90 p-2">{firstMedia.type === 'video' ? <Play size={15}/> : <Images size={15}/>}</span>
                 {item.media.length > 1 && <span className="absolute bottom-3 right-3 rounded-full bg-ink/85 px-2.5 py-1 text-[11px] font-bold text-white">{item.media.length} piezas</span>}
               </div>
