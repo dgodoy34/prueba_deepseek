@@ -30,6 +30,7 @@ function PreviewMedia({ item, media, large = false }: { item: PortfolioItem; med
 function MediaViewer({ item, onClose }: { item: PortfolioItem; onClose: () => void }) {
   const [index, setIndex] = useState(0);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const count = item.media.length;
   useEffect(() => {
     const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -40,7 +41,16 @@ function MediaViewer({ item, onClose }: { item: PortfolioItem; onClose: () => vo
   }, []);
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose();
+      if (event.key === 'Escape') { onClose(); return; }
+      if (event.key === 'Tab' && dialogRef.current) {
+        const focusable = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), video[controls]'));
+        if (focusable.length) {
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+          else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+        }
+      }
       if (event.key === 'ArrowRight') setIndex(i => (i + 1) % count);
       if (event.key === 'ArrowLeft') setIndex(i => (i - 1 + count) % count);
     };
@@ -52,8 +62,8 @@ function MediaViewer({ item, onClose }: { item: PortfolioItem; onClose: () => vo
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#16101f]/90 p-3 backdrop-blur-sm md:p-6"
       onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
-      <div role="dialog" aria-modal="true" aria-labelledby="work-dialog-title" aria-describedby="work-dialog-description"
-        className="relative grid max-h-[92vh] w-full max-w-5xl overflow-y-auto rounded-[1.7rem] bg-[#fffdf9] text-ink shadow-2xl lg:grid-cols-[minmax(0,1.1fr)_minmax(310px,.9fr)]">
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="work-dialog-title" aria-describedby="work-dialog-description"
+        className="relative grid max-h-[92dvh] w-full max-w-5xl overflow-y-auto rounded-[1.7rem] bg-[#fffdf9] text-ink shadow-2xl lg:grid-cols-[minmax(0,1.1fr)_minmax(310px,.9fr)]">
         <div className={`relative flex min-h-[330px] items-center justify-center overflow-hidden ${theme[item.accent].subtle} lg:min-h-[560px]`}>
           <div className={`group mx-auto w-full ${item.category === 'Reels' ? 'max-w-[320px] aspect-[9/16]' : 'aspect-[4/3]'} overflow-hidden rounded-2xl shadow-soft`}>
             <PreviewMedia item={item} media={media} large/>
@@ -103,7 +113,7 @@ export function Portfolio() {
         <p className="max-w-sm text-sm leading-7 text-ink/65">Una mirada al universo de formatos que creamos. Elegí una categoría y explorá el feed.</p>
       </div>
 
-      <div className="mt-11 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-5" aria-label="Categorías de trabajos">
+      <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5" aria-label="Categorías de trabajos">
         {categories.map(category => {
           const first = portfolioItems.find(item => item.category === category)!;
           const Icon = categoryIcons[category];
@@ -125,7 +135,7 @@ export function Portfolio() {
           {portfolioCategories.map(category => <button key={category} type="button" aria-pressed={filter === category} onClick={() => setFilter(category)}
             className={`rounded-full border px-4 py-2 text-sm font-extrabold transition-colors ${filter === category ? 'border-ink bg-ink text-white' : 'border-ink/15 bg-white hover:border-lilac hover:text-lilac'}`}>{category}</button>)}
         </div>
-        <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 md:gap-5">
+        <div className="mt-8 grid grid-cols-2 items-stretch gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 lg:gap-5">
           {visible.map(item => {
             const firstMedia = item.media[0];
             return <button key={item.id} type="button" onClick={() => setActive(item)} aria-label={`Abrir ${item.title}`}
@@ -136,7 +146,7 @@ export function Portfolio() {
                 <span className="absolute right-3 top-3 rounded-full bg-white/90 p-2">{firstMedia.type === 'video' ? <Play size={15}/> : <Images size={15}/>}</span>
                 {item.media.length > 1 && <span className="absolute bottom-3 right-3 rounded-full bg-ink/85 px-2.5 py-1 text-[11px] font-bold text-white">{item.media.length} piezas</span>}
               </div>
-              <div className="p-4 md:p-5"><p className="text-[11px] font-bold uppercase tracking-wider text-lilac">{item.platform}</p><h4 className="mt-2 text-base font-extrabold leading-snug md:text-lg">{item.title}</h4><p className="mt-2 line-clamp-2 text-xs leading-5 text-ink/65 md:text-sm">{item.description}</p></div>
+              <div className="p-4 md:p-5"><p className="text-[11px] font-bold uppercase tracking-wider text-lilac">{item.platform}</p><h4 className="mt-2 text-base font-extrabold leading-snug md:text-lg">{item.title}</h4><p className="mt-2 line-clamp-2 text-xs leading-5 text-ink/65 sm:text-sm">{item.description}</p></div>
             </button>;
           })}
         </div>
