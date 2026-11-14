@@ -16,7 +16,7 @@ export function FloatingActions() {
   const [contactOpen, setContactOpen] = useState(false);
 
   useEffect(() => {
-    const update = () => setVisible(window.scrollY > 320);
+    const update = () => setVisible(window.scrollY > 700);
     update();
     window.addEventListener('scroll', update, { passive: true });
     return () => window.removeEventListener('scroll', update);
@@ -27,7 +27,7 @@ export function FloatingActions() {
   };
 
   return (
-    <aside className="fixed bottom-5 right-4 z-[60] flex flex-col items-end gap-3 sm:bottom-7 sm:right-7" aria-label="Accesos rápidos">
+    <aside className="fixed bottom-4 right-4 z-[60] flex flex-col items-end gap-2 sm:bottom-7 sm:right-7 sm:gap-3" aria-label="Accesos rápidos">
       {contactOpen && !phone && (
         <div className="relative max-w-[260px] rounded-2xl border border-ink/10 bg-white p-5 text-ink shadow-xl">
           <button type="button" onClick={() => setContactOpen(false)} aria-label="Cerrar aviso" className="absolute right-3 top-3 rounded-full p-1 hover:bg-ink/10"><X size={17}/></button>
@@ -43,7 +43,7 @@ export function FloatingActions() {
           rel="noopener noreferrer"
           aria-label="Consultar a Social Studio por WhatsApp"
           title="Hablemos por WhatsApp"
-          className="group flex items-center gap-2 rounded-full border-2 border-[#175d3f] bg-[#25d366] px-4 py-3 font-extrabold text-[#153c2b] shadow-[4px_5px_0_#211b2e] transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lilac"
+          className="group flex items-center gap-2 rounded-full border-2 border-[#175d3f] bg-[#25d366] p-3 font-extrabold sm:px-4 sm:py-3 text-[#153c2b] shadow-[4px_5px_0_#211b2e] transition-transform hover:-translate-y-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-lilac"
         >
           <MessageCircle size={22} strokeWidth={2.5}/>
           <span className="hidden text-sm sm:inline">WhatsApp</span>
@@ -55,7 +55,7 @@ export function FloatingActions() {
           aria-expanded={contactOpen}
           aria-label="Información de contacto por WhatsApp"
           title="WhatsApp del estudio"
-          className="group flex items-center gap-2 rounded-full border-2 border-[#175d3f] bg-[#25d366] px-4 py-3 font-extrabold text-[#153c2b] shadow-[4px_5px_0_#211b2e] transition-transform hover:-translate-y-1"
+          className="group flex items-center gap-2 rounded-full border-2 border-[#175d3f] bg-[#25d366] p-3 font-extrabold sm:px-4 sm:py-3 text-[#153c2b] shadow-[4px_5px_0_#211b2e] transition-transform hover:-translate-y-1"
         >
           <MessageCircle size={22} strokeWidth={2.5}/>
           <span className="hidden text-sm sm:inline">WhatsApp</span>
@@ -63,8 +63,8 @@ export function FloatingActions() {
       )}
 
       <button type="button" onClick={toTop} aria-label="Al cielo, volver al inicio"
-        className={`flex items-center gap-2 rounded-full border-2 border-ink bg-[#e3d8ff] px-4 py-3 text-sm font-extrabold text-ink shadow-[4px_5px_0_#211b2e] transition-all hover:-translate-y-1 ${visible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-3 opacity-0'}`}>
-        <ArrowUp size={19} strokeWidth={2.5}/><span>Al cielo</span>
+        className={`flex items-center gap-2 rounded-full border-2 border-ink bg-[#e3d8ff] p-3 text-sm font-extrabold sm:px-4 sm:py-3 text-ink shadow-[4px_5px_0_#211b2e] transition-all hover:-translate-y-1 ${visible ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-3 opacity-0'}`}>
+        <ArrowUp size={19} strokeWidth={2.5}/><span className="hidden sm:inline">Al cielo</span>
       </button>
     </aside>
   );
