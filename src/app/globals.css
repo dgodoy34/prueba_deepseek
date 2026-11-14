@@ -133,17 +133,126 @@ body {
   }
 }
 
+/* Hero animado con CSS: movimiento visible y continuo, sin dependencias extra.
+   Cada capa se anima por separado para mantener legibilidad y evitar layout shift. */
+.hero-card-motion {
+  animation: hero-card-float 3.7s ease-in-out infinite;
+  transform-origin: 50% 50%;
+}
+.hero-backdrop-violet {
+  animation: hero-backdrop-violet 5.4s ease-in-out infinite;
+}
+.hero-backdrop-peach {
+  animation: hero-backdrop-peach 4.8s ease-in-out infinite;
+}
+.hero-chat-tile {
+  animation: hero-chat-tile-breathe 3.2s ease-in-out infinite;
+}
+.hero-chat-icon {
+  animation: hero-chat-wiggle 3.2s ease-in-out infinite;
+}
+.hero-chat-ripple {
+  pointer-events: none;
+  animation: hero-chat-ripple 3.2s ease-out infinite;
+}
+.hero-heart {
+  animation: hero-heart-pop 2.2s ease-in-out infinite;
+  transform-origin: center;
+}
+.hero-online-dot {
+  animation: hero-online-blink 1.7s ease-in-out infinite;
+}
+.hero-hey {
+  animation: hero-hey-bounce 2.7s ease-in-out infinite;
+}
+@keyframes hero-card-float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-17px) rotate(1deg); }
+}
+@keyframes hero-backdrop-violet {
+  0%, 100% { transform: rotate(-7deg) translate(-1px, 0); }
+  50% { transform: rotate(-12deg) translate(-7px, 9px); }
+}
+@keyframes hero-backdrop-peach {
+  0%, 100% { transform: rotate(6deg) translate(0, 0); }
+  50% { transform: rotate(11deg) translate(6px, -8px); }
+}
+@keyframes hero-chat-tile-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.045); }
+}
+@keyframes hero-chat-wiggle {
+  0%, 100% { transform: rotate(-12deg); }
+  40% { transform: rotate(-4deg); }
+  65% { transform: rotate(-19deg); }
+}
+@keyframes hero-chat-ripple {
+  0%, 15% { opacity: 0; transform: scale(0.8); }
+  35% { opacity: 0.45; }
+  75%, 100% { opacity: 0; transform: scale(1.15); }
+}
+@keyframes hero-heart-pop {
+  0%, 100% { transform: scale(1); }
+  20% { transform: scale(1.23) rotate(-8deg); }
+  35% { transform: scale(1.05); }
+  48% { transform: scale(1.18); }
+  60% { transform: scale(1); }
+}
+@keyframes hero-online-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.25; transform: scale(0.65); }
+}
+@keyframes hero-hey-bounce {
+  0%, 100% { transform: rotate(-12deg) translateY(0); }
+  35% { transform: rotate(3deg) translateY(-10px); }
+  65% { transform: rotate(-18deg) translateY(2px); }
+}
+@media (max-width: 639px) {
+  .hero-card-motion { animation-duration: 5.5s; }
+  .hero-backdrop-violet, .hero-backdrop-peach { animation-duration: 7s; }
+  .hero-chat-tile { animation-duration: 4.5s; }
+  .hero-chat-ripple { display: none; }
+  .hero-heart, .hero-hey { animation-duration: 4s; }
+}
+
+/* Animación controlada por el visitante. Si el sistema pide menos movimiento,
+   el Hero queda quieto inicialmente; el botón permite activarlo expresamente. */
+.hero-motion-paused .hero-card-motion,
+.hero-motion-paused .hero-backdrop-violet,
+.hero-motion-paused .hero-backdrop-peach,
+.hero-motion-paused .hero-chat-tile,
+.hero-motion-paused .hero-chat-icon,
+.hero-motion-paused .hero-chat-ripple,
+.hero-motion-paused .hero-heart,
+.hero-motion-paused .hero-online-dot,
+.hero-motion-paused .hero-hey,
+.hero-motion-paused .float-slow,
+.hero-motion-paused .float-slower {
+  animation: none;
+}
+
+/* Al pausar, restaurar la inclinación de los elementos de la composición. */
+.hero-motion-paused .hero-backdrop-violet { transform: rotate(-7deg); }
+.hero-motion-paused .hero-backdrop-peach { transform: rotate(6deg); }
+.hero-motion-paused .hero-chat-icon { transform: rotate(-12deg); }
+.hero-motion-paused .hero-hey { transform: rotate(-12deg); }
+.hero-motion-paused .float-slow { transform: rotate(-12deg); }
+.hero-motion-paused .float-slower { transform: rotate(9deg); }
+
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  html { scroll-behavior: auto; }
+
+  /* Evitar movimiento involuntario sin desactivar el Hero cuando el visitante
+     elige explícitamente "Activar animación". */
+  .ticker-track,
+  .sample-preview {
+    animation: none;
   }
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .service-card,
+  .nav-link,
+  .primary-link {
+    transition: none;
   }
 }
 
