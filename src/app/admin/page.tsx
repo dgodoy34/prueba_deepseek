@@ -169,7 +169,7 @@ export default function StudioAdmin() {
     }
   }
 
-  if (loading) return <main className="grid min-h-screen place-items-center bg-canvas text-ink">Cargando Social Studio Admin…</main>;
+  if (loading) return <main className="grid min-h-screen place-items-center bg-canvas text-ink">Cargando CYZ Studio Admin…</main>;
   if (!user) return <main className="grid min-h-screen place-items-center bg-canvas px-5 text-ink">
     <div className="max-w-lg text-center">
       <p role="alert" className="mb-5">{failure || 'Necesitás iniciar sesión para ingresar.'}</p>
@@ -182,7 +182,7 @@ export default function StudioAdmin() {
     {deleteTarget && <ConfirmDelete title={deleteTarget.title} busy={deleting} onCancel={() => setDeleteTarget(null)} onConfirm={confirmRemove} />}
     <header className="border-b border-ink/10 bg-white">
       <div className="shell flex flex-wrap items-center justify-between gap-4 py-5">
-        <div><p className="text-xs font-black uppercase tracking-[.15em] text-lilac">SOCIAL STUDIO</p>
+        <div><p className="text-xs font-black uppercase tracking-[.15em] text-lilac">CYZ STUDIO</p>
           <h1 className="text-2xl font-extrabold">Administrador</h1>
           <p className="text-xs text-ink/55">{user.email}</p>
         </div>

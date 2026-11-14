@@ -24,7 +24,7 @@ export default function AdminLogin() {
       const permit = await getDoc(doc(db, ADMIN_COLLECTION, credential.user.uid));
       if (!permit.exists() || permit.data().enabled !== true) {
         await signOut(auth);
-        throw new Error('Esta cuenta no está autorizada para administrar Social Studio.');
+        throw new Error('Esta cuenta no está autorizada para administrar CYZ Studio.');
       }
       router.replace('/admin');
     } catch (cause) {
@@ -36,7 +36,7 @@ export default function AdminLogin() {
 
   return <main className="min-h-screen bg-canvas px-5 py-16 text-ink">
     <div className="mx-auto max-w-md rounded-[2rem] border border-ink/10 bg-white p-7 shadow-soft sm:p-10">
-      <Link href="/" className="text-sm font-extrabold text-lilac">← Volver a Social Studio</Link>
+      <Link href="/" className="text-sm font-extrabold text-lilac">← Volver a CYZ Studio</Link>
       <p className="section-kicker mt-10">ACCESO PRIVADO</p>
       <h1 className="text-4xl font-extrabold tracking-tight">Hola, equipo ✳</h1>
       <p className="mt-3 text-sm leading-6 text-ink/65">Entrá para editar los proyectos y publicaciones del portfolio.</p>
