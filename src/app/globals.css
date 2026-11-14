@@ -215,17 +215,44 @@ body {
   .hero-heart, .hero-hey { animation-duration: 4s; }
 }
 
+/* Animación controlada por el visitante. Si el sistema pide menos movimiento,
+   el Hero queda quieto inicialmente; el botón permite activarlo expresamente. */
+.hero-motion-paused .hero-card-motion,
+.hero-motion-paused .hero-backdrop-violet,
+.hero-motion-paused .hero-backdrop-peach,
+.hero-motion-paused .hero-chat-tile,
+.hero-motion-paused .hero-chat-icon,
+.hero-motion-paused .hero-chat-ripple,
+.hero-motion-paused .hero-heart,
+.hero-motion-paused .hero-online-dot,
+.hero-motion-paused .hero-hey,
+.hero-motion-paused .float-slow,
+.hero-motion-paused .float-slower {
+  animation: none;
+}
+
+/* Al pausar, restaurar la inclinación de los elementos de la composición. */
+.hero-motion-paused .hero-backdrop-violet { transform: rotate(-7deg); }
+.hero-motion-paused .hero-backdrop-peach { transform: rotate(6deg); }
+.hero-motion-paused .hero-chat-icon { transform: rotate(-12deg); }
+.hero-motion-paused .hero-hey { transform: rotate(-12deg); }
+.hero-motion-paused .float-slow { transform: rotate(-12deg); }
+.hero-motion-paused .float-slower { transform: rotate(9deg); }
+
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  html { scroll-behavior: auto; }
+
+  /* Evitar movimiento involuntario sin desactivar el Hero cuando el visitante
+     elige explícitamente "Activar animación". */
+  .ticker-track,
+  .sample-preview {
+    animation: none;
   }
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .service-card,
+  .nav-link,
+  .primary-link {
+    transition: none;
   }
 }
 
