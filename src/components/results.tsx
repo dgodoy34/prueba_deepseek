@@ -15,7 +15,6 @@ export function Results() {
           <div className="mt-8 inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white/60 px-4 py-2 text-xs font-extrabold">
             <ChartNoAxesCombined size={17}/> Caso de éxito · X · Últimos 12 meses
           </div>
-          <p className="mt-6 max-w-lg text-sm leading-7 text-ink/65">El enlace a la cuenta de X se incorporará cuando esté confirmado.</p>
           {xCaseStudy.accountUrl && <a href={xCaseStudy.accountUrl} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 font-extrabold text-lilac hover:underline">Visitar cuenta en X <ArrowUpRight size={18}/></a>}
         </div>
         <div className="rounded-[2.5rem] border-2 border-ink bg-[#fffdf9] p-6 shadow-[11px_12px_0_#211b2e] md:p-9">
