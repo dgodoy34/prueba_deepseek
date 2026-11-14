@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, ChevronDown, Heart, Menu, MessageCircle, MousePointer2, Play, Sparkles, X } from 'lucide-react';
 import { platforms, services } from '@/lib/content';
 import { Portfolio } from '@/components/portfolio';
@@ -29,6 +29,16 @@ function Ticker() {
 }
 
 function Hero() {
+  const [motionEnabled, setMotionEnabled] = useState(false);
+
+  useEffect(() => {
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setMotionEnabled(!preference.matches);
+    update();
+    preference.addEventListener('change', update);
+    return () => preference.removeEventListener('change', update);
+  }, []);
+
   return <section id="inicio" className="relative scroll-mt-20 overflow-hidden pb-10 pt-8 sm:pb-16 sm:pt-12 md:pb-20 md:pt-20">
     <div className="pointer-events-none absolute -right-24 top-4 h-80 w-80 rounded-full bg-[#f8e4bd] blur-3xl"/>
     <div className="shell relative grid items-center gap-5 sm:gap-10 lg:grid-cols-[minmax(0,1.04fr)_minmax(0,.96fr)] lg:gap-8 xl:gap-14">
@@ -39,7 +49,7 @@ function Hero() {
         <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 sm:mt-8 sm:gap-4"><a href="#portfolio" className="primary-link">Explorá los trabajos <ArrowUpRight size={18}/></a><a href="#servicios" className="inline-flex items-center gap-2 text-sm font-extrabold hover:text-lilac">Descubrí qué hacemos <ArrowDown size={17}/></a></div>
         <div className="mt-8 hidden flex-wrap gap-2 text-xs font-extrabold text-ink/60 sm:flex lg:mt-12"><span className="chip">#SocialFirst</span><span className="chip">#Creatividad</span><span className="chip">#Multiplataforma</span></div>
       </div>
-      <div className="hero-stage w-full max-w-[330px] sm:max-w-[460px] lg:translate-y-0 xl:max-w-[505px]" aria-label="Ilustración de ideas, contenido y redes sociales">
+      <div className={`hero-stage w-full max-w-[330px] sm:max-w-[460px] lg:translate-y-0 xl:max-w-[505px] ${motionEnabled ? "hero-motion-active" : "hero-motion-paused"}`} aria-label="Ilustración de ideas, contenido y redes sociales">
         <div className="hero-backdrop-violet absolute inset-[12%_8%_9%_7%] rotate-[-7deg] rounded-[3.5rem] bg-[#bdb2fb]"/>
         <div className="hero-backdrop-peach absolute inset-[7%_12%_14%_10%] rotate-[6deg] rounded-[3.5rem] bg-[#ffc8b7]"/>
         <div className="hero-card-motion absolute inset-[10%_10%_12%_10%] flex flex-col justify-between rounded-[2.3rem] border-2 border-ink bg-[#fffef9] p-4 shadow-[8px_10px_0_#211b2e] sm:rounded-[3.2rem] sm:p-9 sm:shadow-[12px_16px_0_#211b2e]">
@@ -49,6 +59,10 @@ function Hero() {
         </div>
         <div className="float-slow absolute hidden sm:block left-0 top-6 rotate-[-12deg] rounded-2xl border-2 border-ink bg-[#c8f19f] px-4 py-3 text-xs font-black shadow-[5px_5px_0_#211b2e]">GOOD VIBES ✷</div>
         <div className="float-slower absolute hidden sm:block bottom-4 right-0 rotate-[9deg] rounded-2xl border-2 border-ink bg-white px-4 py-3 text-sm font-black shadow-[5px_5px_0_#211b2e]">¡Esto funciona! ↗</div>
+        <button type="button" aria-pressed={motionEnabled} onClick={() => setMotionEnabled(enabled => !enabled)}
+          className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 rounded-full border border-ink/15 bg-white/95 px-3 py-1.5 text-[10px] font-bold text-ink shadow-sm transition-colors hover:bg-[#e6ddff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lilac sm:bottom-1 sm:text-xs">
+          {motionEnabled ? 'Pausar animación' : 'Activar animación'}
+        </button>
       </div>
     </div>
   </section>;
