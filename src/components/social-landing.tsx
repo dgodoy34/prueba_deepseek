@@ -29,26 +29,26 @@ function Ticker() {
 }
 
 function Hero() {
-  return <section id="inicio" className="relative scroll-mt-20 overflow-hidden pb-16 pt-12 md:pb-20 md:pt-20">
+  return <section id="inicio" className="relative scroll-mt-20 overflow-hidden pb-10 pt-8 sm:pb-16 sm:pt-12 md:pb-20 md:pt-20">
     <div className="pointer-events-none absolute -right-24 top-4 h-80 w-80 rounded-full bg-[#f8e4bd] blur-3xl"/>
-    <div className="shell relative grid items-center gap-10 lg:grid-cols-[minmax(0,1.04fr)_minmax(0,.96fr)] lg:gap-8 xl:gap-14">
+    <div className="shell relative grid items-center gap-5 sm:gap-10 lg:grid-cols-[minmax(0,1.04fr)_minmax(0,.96fr)] lg:gap-8 xl:gap-14">
       <div className="min-w-0 lg:pb-4">
-        <div className="eyebrow mb-6"><span className="h-2 w-2 rounded-full bg-[#fe8769]"/> SOCIAL MEDIA, PERO CON ONDA</div>
-        <h1 className="max-w-[650px] text-[clamp(3rem,5.3vw,5.45rem)] font-extrabold leading-[1.08] tracking-[-.064em]">Que tu marca <span className="relative inline-block text-lilac">se haga notar<span className="absolute -bottom-2 left-0 h-3 w-full -rotate-2 rounded-full bg-[#f5c96c]/65 -z-10"/></span><span className="text-[#fe8769]">.</span></h1>
-        <p className="mt-7 max-w-xl text-base leading-8 text-ink/70 md:text-xl">Dos mentes, mil ideas y una misión: crear contenido que genere conversaciones, construya comunidad y se sienta auténtico en cada plataforma.</p>
-        <div className="mt-8 flex flex-wrap items-center gap-4"><a href="#portfolio" className="primary-link">Explorá los trabajos <ArrowUpRight size={18}/></a><a href="#servicios" className="inline-flex items-center gap-2 text-sm font-extrabold hover:text-lilac">Descubrí qué hacemos <ArrowDown size={17}/></a></div>
-        <div className="mt-12 flex flex-wrap gap-2 text-xs font-extrabold text-ink/60"><span className="chip">#SocialFirst</span><span className="chip">#Creatividad</span><span className="chip">#Multiplataforma</span></div>
+        <div className="eyebrow mb-4 sm:mb-6"><span className="h-2 w-2 rounded-full bg-[#fe8769]"/> SOCIAL MEDIA, PERO CON ONDA</div>
+        <h1 className="max-w-[650px] text-[clamp(2.65rem,5.3vw,5.45rem)] sm:text-[clamp(3rem,5.3vw,5.45rem)] font-extrabold leading-[1.08] tracking-[-.064em]">Que tu marca <span className="relative inline-block text-lilac">se haga notar<span className="absolute -bottom-2 left-0 h-3 w-full -rotate-2 rounded-full bg-[#f5c96c]/65 -z-10"/></span><span className="text-[#fe8769]">.</span></h1>
+        <p className="mt-5 max-w-xl text-[15px] leading-7 text-ink/70 sm:mt-7 sm:text-base sm:leading-8 md:text-xl">Dos mentes, mil ideas y una misión: crear contenido que genere conversaciones, construya comunidad y se sienta auténtico en cada plataforma.</p>
+        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 sm:mt-8 sm:gap-4"><a href="#portfolio" className="primary-link">Explorá los trabajos <ArrowUpRight size={18}/></a><a href="#servicios" className="inline-flex items-center gap-2 text-sm font-extrabold hover:text-lilac">Descubrí qué hacemos <ArrowDown size={17}/></a></div>
+        <div className="mt-8 hidden flex-wrap gap-2 text-xs font-extrabold text-ink/60 sm:flex lg:mt-12"><span className="chip">#SocialFirst</span><span className="chip">#Creatividad</span><span className="chip">#Multiplataforma</span></div>
       </div>
-      <div className="hero-stage w-full max-w-[460px] lg:translate-y-0 xl:max-w-[505px]" aria-label="Ilustración de ideas, contenido y redes sociales">
+      <div className="hero-stage w-full max-w-[330px] sm:max-w-[460px] lg:translate-y-0 xl:max-w-[505px]" aria-label="Ilustración de ideas, contenido y redes sociales">
         <div className="absolute inset-[12%_8%_9%_7%] rotate-[-7deg] rounded-[3.5rem] bg-[#bdb2fb]"/>
         <div className="absolute inset-[7%_12%_14%_10%] rotate-[6deg] rounded-[3.5rem] bg-[#ffc8b7]"/>
-        <div className="absolute inset-[10%_10%_12%_10%] flex flex-col justify-between rounded-[3.2rem] border-2 border-ink bg-[#fffef9] p-7 shadow-[12px_16px_0_#211b2e] sm:p-9">
-          <div className="flex items-center justify-between"><div className="flex items-center gap-2"><span className="h-9 w-9 rounded-full bg-lilac"/><div><p className="text-sm font-extrabold">social.studio</p><p className="text-[10px] text-ink/50">Ideas en acción</p></div></div><span className="rounded-full bg-[#f2ebff] px-3 py-1 text-[10px] font-black text-lilac">EN LÍNEA ●</span></div>
-          <div className="relative mx-auto grid h-44 w-44 place-items-center rounded-[2.8rem] bg-[#f9d86f] sm:h-52 sm:w-52"><div className="absolute -right-6 -top-5 rounded-2xl bg-white p-3 shadow-soft"><Heart className="fill-[#ff856c] text-[#ff856c]"/></div><MessageCircle className="h-24 w-24 -rotate-12 stroke-[1.6] text-ink"/><span className="absolute bottom-5 right-2 -rotate-12 rounded-full bg-[#fd8678] px-3 py-2 text-sm font-black text-white">HEY!</span></div>
-          <div className="flex items-center justify-around border-t border-ink/10 pt-5 text-ink"><span className="flex items-center gap-2 text-xs font-bold"><Heart size={19} className="text-[#fc6c77]"/> Conexiones</span><span className="flex items-center gap-2 text-xs font-bold"><MessageCircle size={19} className="text-lilac"/> Conversaciones</span></div>
+        <div className="absolute inset-[10%_10%_12%_10%] flex flex-col justify-between rounded-[2.3rem] border-2 border-ink bg-[#fffef9] p-4 shadow-[8px_10px_0_#211b2e] sm:rounded-[3.2rem] sm:p-9 sm:shadow-[12px_16px_0_#211b2e]">
+          <div className="flex items-center justify-between"><div className="flex items-center gap-2"><span className="h-7 w-7 rounded-full bg-lilac sm:h-9 sm:w-9"/><div><p className="text-xs font-extrabold sm:text-sm">social.studio</p><p className="text-[10px] text-ink/50">Ideas en acción</p></div></div><span className="rounded-full bg-[#f2ebff] px-2 py-1 text-[9px] font-black text-lilac sm:px-3 sm:text-[10px]">EN LÍNEA ●</span></div>
+          <div className="relative mx-auto grid h-32 w-32 place-items-center rounded-[2rem] bg-[#f9d86f] sm:h-52 sm:w-52 sm:rounded-[2.8rem]"><div className="absolute -right-6 -top-5 rounded-2xl bg-white p-3 shadow-soft"><Heart className="fill-[#ff856c] text-[#ff856c]"/></div><MessageCircle className="h-16 w-16 -rotate-12 stroke-[1.6] text-ink sm:h-24 sm:w-24"/><span className="absolute bottom-3 right-0 -rotate-12 rounded-full bg-[#fd8678] px-2 py-1 text-xs font-black text-white sm:bottom-5 sm:right-2 sm:px-3 sm:py-2 sm:text-sm">HEY!</span></div>
+          <div className="flex items-center justify-around gap-1 border-t border-ink/10 pt-3 text-ink sm:pt-5"><span className="flex items-center gap-1 text-[10px] font-bold sm:gap-2 sm:text-xs"><Heart size={19} className="text-[#fc6c77]"/> Conexiones</span><span className="flex items-center gap-1 text-[10px] font-bold sm:gap-2 sm:text-xs"><MessageCircle size={19} className="text-lilac"/> Conversaciones</span></div>
         </div>
-        <div className="float-slow absolute left-0 top-6 rotate-[-12deg] rounded-2xl border-2 border-ink bg-[#c8f19f] px-4 py-3 text-xs font-black shadow-[5px_5px_0_#211b2e]">GOOD VIBES ✷</div>
-        <div className="float-slower absolute bottom-4 right-0 rotate-[9deg] rounded-2xl border-2 border-ink bg-white px-4 py-3 text-sm font-black shadow-[5px_5px_0_#211b2e]">¡Esto funciona! ↗</div>
+        <div className="float-slow absolute hidden sm:block left-0 top-6 rotate-[-12deg] rounded-2xl border-2 border-ink bg-[#c8f19f] px-4 py-3 text-xs font-black shadow-[5px_5px_0_#211b2e]">GOOD VIBES ✷</div>
+        <div className="float-slower absolute hidden sm:block bottom-4 right-0 rotate-[9deg] rounded-2xl border-2 border-ink bg-white px-4 py-3 text-sm font-black shadow-[5px_5px_0_#211b2e]">¡Esto funciona! ↗</div>
       </div>
     </div>
   </section>;
