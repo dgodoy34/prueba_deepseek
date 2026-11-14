@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Clapperboard, Images, Megaphone, Play, Radio, X } from 'lucide-react';
 import { portfolioCategories, portfolioItems, type PortfolioCategory, type PortfolioItem, type WorkCategory, type MediaAsset } from '@/lib/portfolio';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { firebaseServices, STUDIO_COLLECTION } from '@/lib/firebase/client';
+import { safePortfolioItem } from '@/lib/firebase/publications';
 
 const theme: Record<PortfolioItem['accent'], { gradient: string; subtle: string }> = {
   violet: { gradient: 'from-[#e4d7ff] to-[#b49af8]', subtle: 'bg-[#ebe2ff]' },
@@ -96,10 +99,32 @@ function MediaViewer({ item, onClose }: { item: PortfolioItem; onClose: () => vo
 }
 
 export function Portfolio() {
+  const [items, setItems] = useState<PortfolioItem[]>(portfolioItems);
+  const [isRealContent, setIsRealContent] = useState(false);
   const [filter, setFilter] = useState<PortfolioCategory>('Todos');
   const [active, setActive] = useState<PortfolioItem | null>(null);
   const feedRef = useRef<HTMLDivElement>(null);
-  const visible = portfolioItems.filter(item => filter === 'Todos' || item.category === filter);
+  const visible = items.filter(item => filter === 'Todos' || item.category === filter);
+
+  useEffect(() => {
+    if (!process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) return;
+    let active = true;
+    (async () => {
+      try {
+        const { db } = firebaseServices();
+        const snapshot = await getDocs(query(collection(db, STUDIO_COLLECTION), where('published', '==', true)));
+        const published = snapshot.docs.map(doc => safePortfolioItem(doc.id, doc.data()))
+          .filter((item): item is PortfolioItem => Boolean(item));
+        if (active && published.length) {
+          setItems(published);
+          setIsRealContent(true);
+        }
+      } catch (error) {
+        console.error('No se pudieron cargar los proyectos publicados.', error);
+      }
+    })();
+    return () => { active = false; };
+  }, []);
 
   const choose = (category: PortfolioCategory) => {
     setFilter(category);
@@ -115,13 +140,13 @@ export function Portfolio() {
 
       <div className="mt-10 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4 lg:gap-5" aria-label="Categorías de trabajos">
         {categories.map(category => {
-          const first = portfolioItems.find(item => item.category === category)!;
+          const first = items.find(item => item.category === category) ?? portfolioItems.find(item => item.category === category)!;
           const Icon = categoryIcons[category];
-          const count = portfolioItems.filter(item => item.category === category).length;
+          const count = items.filter(item => item.category === category).length;
           return <button type="button" key={category} onClick={() => choose(category)} aria-pressed={filter === category}
             className={`group relative flex min-h-[165px] flex-col justify-between overflow-hidden rounded-[1.7rem] border-2 p-5 text-left transition-all hover:-translate-y-1 md:min-h-[205px] md:p-6 ${filter === category ? 'border-ink shadow-[6px_7px_0_#211b2e]' : 'border-transparent hover:border-ink/20'} bg-gradient-to-br ${theme[first.accent].gradient}`}>
             <div className="flex items-start justify-between"><Icon size={30} strokeWidth={1.5}/><ArrowUpRight className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" size={21}/></div>
-            <div><h3 className="text-xl font-extrabold tracking-tight md:text-2xl">{category}</h3><p className="mt-1 text-xs font-semibold text-ink/65">{count} ejemplos de formato</p></div>
+            <div><h3 className="text-xl font-extrabold tracking-tight md:text-2xl">{category}</h3><p className="mt-1 text-xs font-semibold text-ink/65">{count} {isRealContent ? 'trabajos' : 'ejemplos de formato'}</p></div>
           </button>;
         })}
       </div>
@@ -129,7 +154,7 @@ export function Portfolio() {
       <div ref={feedRef} className="scroll-mt-28 pt-16">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div><p className="section-kicker">EXPLORÁ EL FEED</p><h3 className="text-3xl font-extrabold tracking-tight md:text-4xl">{filter === 'Todos' ? 'Dentro de nuestro universo' : `Explorando ${filter}`}</h3></div>
-          <span className="rounded-full border border-ink/15 bg-white px-4 py-2 text-xs font-bold">{visible.length} {visible.length === 1 ? 'formato' : 'formatos'} de muestra</span>
+          <span className="rounded-full border border-ink/15 bg-white px-4 py-2 text-xs font-bold">{visible.length} {isRealContent ? (visible.length === 1 ? 'trabajo' : 'trabajos') : (visible.length === 1 ? 'formato' : 'formatos') + ' de muestra'}</span>
         </div>
         <div className="mt-7 flex flex-wrap gap-2" role="group" aria-label="Filtrar publicaciones">
           {portfolioCategories.map(category => <button key={category} type="button" aria-pressed={filter === category} onClick={() => setFilter(category)}
@@ -150,7 +175,7 @@ export function Portfolio() {
             </button>;
           })}
         </div>
-        <p className="mt-6 rounded-xl border border-ink/10 bg-[#f5f0ff] px-4 py-3 text-sm text-ink/70">Boceto interactivo: estas publicaciones son ejemplos de formato, no trabajos reales. Se reemplazarán por material del equipo antes de presentar el portfolio definitivo.</p>
+        {!isRealContent && <p className="mt-6 rounded-xl border border-ink/10 bg-[#f5f0ff] px-4 py-3 text-sm text-ink/70">Boceto interactivo: estas publicaciones son ejemplos de formato, no trabajos reales. Se reemplazarán por material del equipo antes de presentar el portfolio definitivo.</p>}
       </div>
     </div>
     {active && <MediaViewer key={active.id} item={active} onClose={() => setActive(null)}/>}
