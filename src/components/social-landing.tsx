@@ -14,10 +14,10 @@ function Header() {
   return <nav className="sticky top-0 z-50 border-b border-ink/10 bg-canvas/90 backdrop-blur-xl" aria-label="Navegación principal">
     <div className="shell flex h-[76px] items-center justify-between gap-4">
       <a href="#inicio" className="inline-flex items-center gap-2 text-xl font-extrabold tracking-tight" aria-label="Social Studio, inicio"><span className="grid h-9 w-9 place-items-center rounded-2xl bg-lilac text-white"><Sparkles size={19}/></span>social<span className="text-lilac">studio.</span></a>
-      <div className="hidden items-center gap-6 text-sm font-bold md:flex lg:gap-8"><a href="#servicios" className="nav-link">Qué hacemos</a><a href="#portfolio" className="nav-link">Portfolio</a><a href="#resultados" className="nav-link">Resultados</a><a href="#plataformas" className="nav-link">Plataformas</a><a href="#enfoque" className="nav-link">Nuestra forma</a></div>
-      <button className="rounded-xl border border-ink/15 p-2 md:hidden" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? 'Cerrar menú' : 'Abrir menú'} onClick={() => setOpen(v => !v)}>{open ? <X size={22}/> : <Menu size={22}/>}</button>
+      <div className="hidden items-center gap-5 text-[13px] font-bold lg:flex xl:gap-8 xl:text-sm"><a href="#servicios" className="nav-link">Qué hacemos</a><a href="#portfolio" className="nav-link">Portfolio</a><a href="#resultados" className="nav-link">Resultados</a><a href="#plataformas" className="nav-link">Plataformas</a><a href="#enfoque" className="nav-link">Nuestra forma</a></div>
+      <button className="rounded-xl border border-ink/15 p-2 lg:hidden" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? 'Cerrar menú' : 'Abrir menú'} onClick={() => setOpen(v => !v)}>{open ? <X size={22}/> : <Menu size={22}/>}</button>
     </div>
-    {open && <div id="mobile-navigation" className="flex flex-col gap-4 border-t border-ink/10 bg-canvas px-6 py-5 text-sm font-bold md:hidden">{[['Qué hacemos','#servicios'],['Portfolio','#portfolio'],['Resultados','#resultados'],['Plataformas','#plataformas'],['Nuestra forma','#enfoque']].map(([label,href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}</div>}
+    {open && <div id="mobile-navigation" className="flex flex-col gap-4 border-t border-ink/10 bg-canvas px-6 py-5 text-sm font-bold lg:hidden">{[['Qué hacemos','#servicios'],['Portfolio','#portfolio'],['Resultados','#resultados'],['Plataformas','#plataformas'],['Nuestra forma','#enfoque']].map(([label,href]) => <a key={href} href={href} onClick={() => setOpen(false)}>{label}</a>)}</div>}
   </nav>;
 }
 
@@ -29,17 +29,17 @@ function Ticker() {
 }
 
 function Hero() {
-  return <section id="inicio" className="relative overflow-hidden pt-14 pb-16 md:pt-20 md:pb-20">
+  return <section id="inicio" className="relative scroll-mt-20 overflow-hidden pb-16 pt-12 md:pb-20 md:pt-20">
     <div className="pointer-events-none absolute -right-24 top-4 h-80 w-80 rounded-full bg-[#f8e4bd] blur-3xl"/>
-    <div className="shell relative grid items-center gap-12 lg:grid-cols-[1fr_1fr] xl:gap-16">
-      <div>
+    <div className="shell relative grid items-center gap-10 lg:grid-cols-[minmax(0,1.04fr)_minmax(0,.96fr)] lg:gap-8 xl:gap-14">
+      <div className="min-w-0 lg:pb-4">
         <div className="eyebrow mb-6"><span className="h-2 w-2 rounded-full bg-[#fe8769]"/> SOCIAL MEDIA, PERO CON ONDA</div>
-        <h1 className="max-w-[650px] text-[clamp(3.2rem,5.6vw,5.8rem)] font-extrabold leading-[1.05] tracking-[-.068em]">Que tu marca <span className="relative inline-block text-lilac">se haga notar<span className="absolute -bottom-2 left-0 h-3 w-full -rotate-2 rounded-full bg-[#f5c96c]/65 -z-10"/></span><span className="text-[#fe8769]">.</span></h1>
+        <h1 className="max-w-[650px] text-[clamp(3rem,5.3vw,5.45rem)] font-extrabold leading-[1.08] tracking-[-.064em]">Que tu marca <span className="relative inline-block text-lilac">se haga notar<span className="absolute -bottom-2 left-0 h-3 w-full -rotate-2 rounded-full bg-[#f5c96c]/65 -z-10"/></span><span className="text-[#fe8769]">.</span></h1>
         <p className="mt-7 max-w-xl text-base leading-8 text-ink/70 md:text-xl">Dos mentes, mil ideas y una misión: crear contenido que genere conversaciones, construya comunidad y se sienta auténtico en cada plataforma.</p>
-        <div className="mt-8 flex flex-wrap items-center gap-4"><a href="#plataformas" className="primary-link">Explorá el universo <ArrowUpRight size={18}/></a><a href="#servicios" className="inline-flex items-center gap-2 text-sm font-extrabold hover:text-lilac">Descubrí qué hacemos <ArrowDown size={17}/></a></div>
+        <div className="mt-8 flex flex-wrap items-center gap-4"><a href="#portfolio" className="primary-link">Explorá los trabajos <ArrowUpRight size={18}/></a><a href="#servicios" className="inline-flex items-center gap-2 text-sm font-extrabold hover:text-lilac">Descubrí qué hacemos <ArrowDown size={17}/></a></div>
         <div className="mt-12 flex flex-wrap gap-2 text-xs font-extrabold text-ink/60"><span className="chip">#SocialFirst</span><span className="chip">#Creatividad</span><span className="chip">#Multiplataforma</span></div>
       </div>
-      <div className="hero-stage lg:-translate-y-8 xl:-translate-y-10" aria-label="Ilustración de ideas, contenido y redes sociales">
+      <div className="hero-stage w-full max-w-[460px] lg:translate-y-0 xl:max-w-[505px]" aria-label="Ilustración de ideas, contenido y redes sociales">
         <div className="absolute inset-[12%_8%_9%_7%] rotate-[-7deg] rounded-[3.5rem] bg-[#bdb2fb]"/>
         <div className="absolute inset-[7%_12%_14%_10%] rotate-[6deg] rounded-[3.5rem] bg-[#ffc8b7]"/>
         <div className="absolute inset-[10%_10%_12%_10%] flex flex-col justify-between rounded-[3.2rem] border-2 border-ink bg-[#fffef9] p-7 shadow-[12px_16px_0_#211b2e] sm:p-9">
