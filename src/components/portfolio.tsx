@@ -64,8 +64,9 @@ function MediaViewer({ item, onClose }: { item: PortfolioItem; onClose: () => vo
       onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}>
       <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="work-dialog-title" aria-describedby="work-dialog-description"
         className="relative grid max-h-[92dvh] w-full max-w-5xl overflow-y-auto rounded-[1.7rem] bg-[#fffdf9] text-ink shadow-2xl lg:grid-cols-[minmax(0,1.1fr)_minmax(310px,.9fr)]">
-        <div className={`relative flex min-h-[330px] items-center justify-center overflow-hidden ${theme[item.accent].subtle} lg:min-h-[560px]`}>
-          <div className={`group mx-auto w-full ${item.category === 'Reels' ? 'max-w-[320px] aspect-[9/16]' : 'aspect-[4/3]'} overflow-hidden rounded-2xl shadow-soft`}>
+        <button ref={closeRef} type="button" onClick={onClose} aria-label="Cerrar publicación" className="sticky top-3 z-20 col-start-1 row-start-1 ml-auto mr-3 mt-3 h-10 w-10 rounded-full border border-ink/15 bg-white/95 p-2 shadow-soft transition hover:bg-[#f5f0ff] lg:absolute lg:right-4 lg:top-4 lg:m-0"><X size={21}/></button>
+        <div className={`relative col-start-1 row-start-1 flex h-[min(49dvh,380px)] min-h-[265px] items-center justify-center overflow-hidden ${theme[item.accent].subtle} lg:h-auto lg:min-h-[560px]`}>
+          <div className={`group mx-auto h-full max-h-full ${item.category === 'Reels' ? 'aspect-[9/16]' : 'aspect-[4/3] max-w-full'} overflow-hidden rounded-2xl shadow-soft`}>
             <PreviewMedia item={item} media={media} large/>
           </div>
           {count > 1 && <>
@@ -76,12 +77,11 @@ function MediaViewer({ item, onClose }: { item: PortfolioItem; onClose: () => vo
             </div>
           </>}
         </div>
-        <div className="relative flex flex-col p-6 md:p-9">
+        <div className="relative flex flex-col p-5 sm:p-6 md:p-9">
           <div className="flex items-start justify-between gap-4">
             <span className="rounded-full bg-[#eee7ff] px-4 py-2 text-xs font-black">{item.category} · {item.platform}</span>
-            <button ref={closeRef} type="button" onClick={onClose} aria-label="Cerrar publicación" className="rounded-full border border-ink/15 p-2 transition hover:bg-ink/10"><X size={21}/></button>
           </div>
-          <div className="mt-9">
+          <div className="mt-5 sm:mt-9">
             <p className="section-kicker">DENTRO DEL STUDIO</p>
             <h3 id="work-dialog-title" className="text-3xl font-extrabold leading-tight tracking-tight md:text-4xl">{item.title}</h3>
             <p id="work-dialog-description" className="mt-5 text-base leading-7 text-ink/70">{item.description}</p>
@@ -143,7 +143,7 @@ export function Portfolio() {
               <div className="relative aspect-[4/5] overflow-hidden">
                 <PreviewMedia item={item} media={firstMedia}/>
                 <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[10px] font-black uppercase">{item.category}</span>
-                <span className="absolute right-3 top-3 rounded-full bg-white/90 p-2">{firstMedia.type === 'video' ? <Play size={15}/> : <Images size={15}/>}</span>
+                <span className="absolute bottom-3 left-3 rounded-full bg-white/90 p-2">{firstMedia.type === 'video' ? <Play size={15}/> : <Images size={15}/>}</span>
                 {item.media.length > 1 && <span className="absolute bottom-3 right-3 rounded-full bg-ink/85 px-2.5 py-1 text-[11px] font-bold text-white">{item.media.length} piezas</span>}
               </div>
               <div className="p-4 md:p-5"><p className="text-[11px] font-bold uppercase tracking-wider text-lilac">{item.platform}</p><h4 className="mt-2 text-base font-extrabold leading-snug md:text-lg">{item.title}</h4><p className="mt-2 line-clamp-2 text-xs leading-5 text-ink/65 sm:text-sm">{item.description}</p></div>
